@@ -1,56 +1,69 @@
+#NOUNS: Margaret class, margaret list, message = command line message, dict_name[name] = message, messages.txt, 
+#   FileNotFoundError, EOFError, KeyError
+#VERBS: create 3 files, READ command line message; STORE that message as a value in a dict, STORE that dict 
+#   in messages.txt; RETRIEVE that value from messages.txt; PRINT message in the terminal,
+#I don't know where to put the Key error
+
 import pickle
 import sys
 
-global file_name
-# global action
-
 class Margaret():
-    """ """
+    """
+    The Class for Margaret that allows the user to save and retrieve her messages 
 
-    def __init__(self, name):
-        """ """
-        self.name = name
+    Methods:
+    log
+    serialize
+    deserialize
 
-    def log(message):
-        """Log a message to the log file
+    """
+
+    def __init__(self):
         """
-        with open('messages.txt', a) as file:
-            file.write(str(message))
+        Creates the dict and list for Margaret's storage.
+        Also, it tries to deserialize
 
+        """
 
-    if __name__ == "__main__":
+        self.info = {}
+        self.marg_list = []
+
         try:
-            file_name = sys.argv[1]
-            action = sys.argv[2]
-
-        if action == r:
-            read_log()
-        elif action == w or action == a:
-            log( .join(sys.argv[3:]), action)
-        except IndexError:
+            self.info = self.deserialize()         #TRY to SAVE the dict
+        except FileNotFoundError:
             pass
 
-#####################3
-def __init__(self):
-    self.all_notes = []
-    try:
-        self.all_notes = self.deserialize()
-    except FileNotFoundError:
-        pass
 
-def list_notes(self):
-    for key,note in enumerate(self.all_notes):
-        print(str(key) + ": " + note)
+    def log(self):
+        """Stores the message into the value in a dict"""
 
-def serialize(self):
-    with open(notes.txt, wb) as file:
-        pickle.dump(self.all_notes, file)
+        self.marg_list.append(sys.argv[1:])
+        self.info['Margaret'] = self.marg_list
+        self.serialize()
 
-def deserialize(self):
-    try:
-        with open(notes.txt, rb) as file:
-            self.all_notes = pickle.load(file)
-    except EOFError:
-        pass
+    def serialize(self):
+        """ Writes/serializes message to file"""
 
-return self.all_notes
+        with open('messages.txt', 'wb') as file:
+            pickle.dump(self.info, file)
+
+    def deserialize(self):
+        """ Reads/deserializes message from file"""
+
+        try:
+            with open('messages.txt', 'rb') as file:
+                self.info = pickle.load(file)
+        except (EOFError, KeyError):
+            pass
+
+        print(self.info)
+        #print(self.marg_list)
+
+        return self.info
+        return self.marg_list['Margaret']
+
+if __name__ == '__main__':
+    margaret = Margaret()
+    margaret.log()
+    margaret.serialize()
+    margaret.deserialize()
